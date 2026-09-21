@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Your Travels — every place, remembered</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,13 +23,13 @@
     --land: #EDE0D8;
     --land-hover: #E0CFC5;
 
-    --v0: #A8C5D0;   /* wishlist — dusty pool blue */
-    --v1: #F8D3C3;   /* 1 trip — peach cream */
-    --v2: #EBAAB0;   /* 2 trips — soft rose */
-    --v3: #C5919D;   /* 3 trips — dusty rose */
-    --v4: #915666;   /* 4+ trips — wine rose */
+    --v0: #A8C5D0;
+    --v1: #F8D3C3;
+    --v2: #EBAAB0;
+    --v3: #C5919D;
+    --v4: #915666;
 
-    --accent: #D9A552;   /* champagne gold */
+    --accent: #D9A552;
   }
 
   html, body { background: var(--bg); }
@@ -137,6 +137,11 @@
   .country.v3:hover { fill: #CFA0AB; }
   .country.v4:hover { fill: #A26777; }
 
+  .country.selected {
+    stroke: var(--v4);
+    stroke-width: 1.6;
+  }
+
   @keyframes pop {
     0% { transform: scale(1); }
     50% { transform: scale(1.03); }
@@ -185,8 +190,6 @@
     text-transform: uppercase;
     font-weight: 400;
   }
-
-  /* ── Sections ────────────────────────────────────── */
 
   .section {
     margin-top: 12px;
@@ -252,11 +255,7 @@
     font-weight: 500;
   }
 
-  .section-body {
-    padding: 4px 20px 20px;
-  }
-
-  /* ── Chips ────────────────────────────────────── */
+  .section-body { padding: 4px 20px 20px; }
 
   .chip-list {
     display: flex;
@@ -267,7 +266,7 @@
   .chip {
     background: var(--bg);
     border: 0.5px solid var(--border);
-    padding: 8px 10px 8px 10px;
+    padding: 8px 10px;
     border-radius: 100px;
     font-size: 12.5px;
     color: var(--text);
@@ -299,7 +298,7 @@
   .chip-wish { border-style: dashed; }
 
   .chip-count {
-    background: rgba(60, 40, 25, 0.06);
+    background: rgba(90, 71, 56, 0.06);
     padding: 2px 7px;
     border-radius: 100px;
     font-size: 10.5px;
@@ -308,16 +307,13 @@
     margin-left: 2px;
   }
 
-  /* ── Timeline ────────────────────────────────────── */
-
+  /* Timeline - B layout (stacked, no columns) */
   .timeline-list {
     display: flex;
     flex-direction: column;
   }
 
   .timeline-item {
-    display: flex;
-    gap: 14px;
     padding: 14px 0;
     border-top: 0.5px solid var(--border);
   }
@@ -325,34 +321,39 @@
   .timeline-item:first-child { border-top: none; padding-top: 4px; }
 
   .timeline-date {
-    min-width: 74px;
     font-size: 10px;
     color: var(--text-muted);
     letter-spacing: 1.2px;
     text-transform: uppercase;
     font-weight: 500;
-    padding-top: 3px;
-    line-height: 1.4;
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 6px;
   }
 
   .timeline-date.no-date { font-style: italic; opacity: 0.7; }
-
-  .timeline-info { flex: 1; min-width: 0; }
 
   .timeline-country {
     font-size: 14px;
     font-weight: 500;
     color: var(--text);
-    margin-bottom: 2px;
+    margin-bottom: 4px;
     display: flex;
-    align-items: center;
+    align-items: baseline;
     gap: 6px;
+    flex-wrap: wrap;
   }
 
   .timeline-city {
-    font-size: 12.5px;
+    font-size: 13px;
     color: var(--v3);
-    margin-bottom: 2px;
+    font-weight: 400;
+  }
+
+  .timeline-city::before {
+    content: '·';
+    margin: 0 4px;
+    color: var(--text-muted);
+    font-weight: 400;
   }
 
   .timeline-note {
@@ -360,8 +361,6 @@
     color: var(--text-muted);
     line-height: 1.4;
   }
-
-  /* ── Year bars ────────────────────────────────────── */
 
   .year-summary {
     display: flex;
@@ -416,8 +415,6 @@
     font-weight: 500;
   }
 
-  /* ── Data actions ────────────────────────────────────── */
-
   .data-actions {
     display: flex;
     gap: 8px;
@@ -450,6 +447,49 @@
     color: var(--text-muted);
     line-height: 1.5;
     margin-top: 12px;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--bg);
+    border-radius: 10px;
+    border: 0.5px solid var(--border);
+    margin-top: 16px;
+  }
+
+  .lang-toggle-label {
+    font-size: 10.5px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .lang-toggle-btns {
+    display: flex;
+    gap: 4px;
+  }
+
+  .lang-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: 0.5px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-family: var(--font);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+
+  .lang-btn.active {
+    background: var(--v3);
+    color: white;
+    border-color: var(--v3);
   }
 
   .loading {
@@ -489,37 +529,23 @@
     text-transform: uppercase;
     font-weight: 500;
     opacity: 0.6;
+    padding-bottom: 60vh;
   }
 
-  /* ── Bottom Sheet ────────────────────────────────────── */
-
-  .sheet-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(60, 40, 25, 0.35);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-    z-index: 200;
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
-  }
-
-  .sheet-backdrop.show { opacity: 1; pointer-events: auto; }
-
+  /* Bottom Sheet - B-plan (no backdrop, map stays interactive) */
   .sheet {
     position: fixed;
     left: 0; right: 0; bottom: 0;
     background: var(--surface);
     border-radius: 24px 24px 0 0;
-    padding: 8px 20px 32px;
-    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+    padding: 8px 20px 24px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
     transform: translateY(100%);
     transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 201;
-    max-height: 85vh;
+    max-height: 55vh;
     overflow-y: auto;
-    box-shadow: 0 -12px 40px rgba(60, 40, 25, 0.15);
+    box-shadow: 0 -12px 40px rgba(90, 71, 56, 0.15);
     border-top: 0.5px solid var(--border-strong);
   }
 
@@ -528,24 +554,24 @@
   .sheet-handle {
     width: 40px;
     height: 4px;
-    background: rgba(60, 40, 25, 0.15);
+    background: rgba(90, 71, 56, 0.15);
     border-radius: 2px;
-    margin: 8px auto 20px;
+    margin: 8px auto 16px;
   }
 
   .sheet-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
   }
 
   .sheet-country {
     font-family: var(--font);
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 400;
     color: var(--text);
-    line-height: 1.1;
+    line-height: 1.2;
     letter-spacing: -0.01em;
     flex: 1;
     min-width: 0;
@@ -553,23 +579,29 @@
   }
 
   .sheet-country .flag {
-    font-size: 22px;
+    font-size: 20px;
     margin-right: 4px;
   }
 
-  .sheet-close {
+  .sheet-icon-btn {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 26px;
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 6px;
     line-height: 1;
     font-family: inherit;
     flex-shrink: 0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s, background 0.2s;
   }
 
-  .sheet-close:hover { color: var(--text); }
+  .sheet-icon-btn:hover { color: var(--text); background: var(--bg); }
+
+  .sheet-close { font-size: 22px; }
 
   .sheet-count {
     font-size: 11px;
@@ -577,7 +609,7 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: 500;
-    margin-top: 6px;
+    margin-top: 4px;
   }
 
   .sheet-count strong {
@@ -591,11 +623,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 14px;
+    padding: 10px 14px;
     background: var(--bg);
     border-radius: 10px;
     border: 0.5px solid var(--border);
-    margin: 18px 0 0;
+    margin: 14px 0 0;
     cursor: pointer;
     transition: background 0.2s;
     -webkit-tap-highlight-color: transparent;
@@ -632,10 +664,10 @@
   }
 
   .visit-list {
-    margin: 18px 0 16px;
+    margin: 14px 0 12px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
   }
 
   .visit-item {
@@ -643,7 +675,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 12px 12px 12px 14px;
+    padding: 10px 10px 10px 14px;
     background: var(--bg);
     border-radius: 10px;
     border: 0.5px solid var(--border);
@@ -652,7 +684,7 @@
   .visit-item-info { flex: 1; min-width: 0; }
 
   .visit-date {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 500;
     color: var(--text);
     margin-bottom: 2px;
@@ -672,7 +704,7 @@
   }
 
   .visit-note {
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--text-muted);
     line-height: 1.4;
     overflow-wrap: break-word;
@@ -682,7 +714,7 @@
     background: transparent;
     border: none;
     color: var(--text-muted);
-    font-size: 22px;
+    font-size: 20px;
     cursor: pointer;
     padding: 2px 8px;
     line-height: 1;
@@ -695,7 +727,7 @@
 
   .empty-visits {
     text-align: center;
-    padding: 20px 0;
+    padding: 14px 0;
     color: var(--text-muted);
     font-size: 10.5px;
     letter-spacing: 2px;
@@ -708,7 +740,7 @@
     background: var(--v3);
     color: white;
     border: none;
-    padding: 14px;
+    padding: 12px;
     border-radius: 12px;
     font-family: var(--font);
     font-size: 11px;
@@ -724,10 +756,10 @@
   .add-form {
     background: var(--bg);
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
     display: none;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     border: 0.5px solid var(--border);
   }
 
@@ -739,7 +771,7 @@
     letter-spacing: 1.8px;
     text-transform: uppercase;
     font-weight: 500;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     display: block;
   }
 
@@ -754,9 +786,29 @@
     color: var(--text);
     outline: none;
     transition: border-color 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 40px;
   }
 
   .add-form input:focus { border-color: var(--v3); }
+
+  .add-form input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-height: 40px;
+    display: block;
+    line-height: 20px;
+  }
+
+  .add-form input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+  }
+
+  .add-form input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    cursor: pointer;
+  }
 
   .form-actions {
     display: flex;
@@ -766,7 +818,7 @@
 
   .form-actions button {
     flex: 1;
-    padding: 12px;
+    padding: 11px;
     border-radius: 8px;
     font-family: var(--font);
     font-size: 10.5px;
@@ -787,17 +839,138 @@
   }
   .btn-cancel:hover { color: var(--text); }
 
+  /* Country search modal */
+  .search-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(90, 71, 56, 0.45);
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .search-modal.show { display: flex; }
+
+  .search-modal-inner {
+    background: var(--surface);
+    border-radius: 20px 20px 0 0;
+    padding: 12px 16px 24px;
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    width: 100%;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    animation: sheetSlideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes sheetSlideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+
+  .search-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 4px 12px;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  #search-input {
+    flex: 1;
+    padding: 10px 14px;
+    background: var(--bg);
+    border: 0.5px solid var(--border);
+    border-radius: 100px;
+    font-family: var(--font);
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  #search-input:focus { border-color: var(--v3); }
+
+  .search-results {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 8px;
+  }
+
+  .search-result {
+    padding: 12px 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text);
+    transition: background 0.15s;
+  }
+
+  .search-result:hover { background: var(--bg); }
+
+  .search-result-flag { font-size: 18px; }
+  .search-result-count {
+    margin-left: auto;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .search-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  /* Responsive breakpoints */
   @media (min-width: 640px) {
-    .brand { font-size: 36px; }
+    body { padding: 40px 20px 60px; }
+    .brand { font-size: 34px; }
     .stat-num { font-size: 38px; }
     .sheet {
       max-width: 480px;
       left: 50%;
+      right: auto;
       transform: translate(-50%, 100%);
       border-radius: 24px;
-      bottom: 24px;
+      bottom: 20px;
+      max-height: 60vh;
     }
     .sheet.show { transform: translate(-50%, 0); }
+    .search-modal-inner {
+      max-width: 500px;
+      margin: 0 auto;
+      border-radius: 20px;
+      margin-bottom: 40px;
+    }
+    .search-modal {
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  @media (min-width: 900px) {
+    body { padding: 56px 24px 72px; }
+    .container { max-width: 780px; }
+    .brand { font-size: 40px; letter-spacing: 0.25em; }
+    .stats { gap: 12px; }
+    .stat-num { font-size: 44px; }
+    .stat-label { font-size: 10px; }
+    .stat { padding: 24px 10px 18px; }
+    .map-wrap { padding: 16px 10px 10px; margin-bottom: 16px; }
+    .section-title { font-size: 16px; }
+    .section-body { padding: 4px 24px 24px; }
+    .chip { font-size: 13px; padding: 10px 12px; }
   }
 </style>
 </head>
@@ -806,45 +979,45 @@
 <div class="container">
   <header>
     <h1 class="brand">YOUR <em>TRAVELS</em></h1>
-    <p class="tagline">Every place, remembered</p>
+    <p class="tagline" data-i18n="tagline">Every place, remembered</p>
   </header>
 
   <div class="stats">
     <div class="stat">
       <div class="stat-num" id="country-count">0</div>
-      <div class="stat-label">Countries</div>
+      <div class="stat-label" data-i18n="countries">Countries</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num" id="world-pct">0%</div>
+      <div class="stat-label" data-i18n="ofWorld">of the world</div>
     </div>
     <div class="stat">
       <div class="stat-num" id="trip-count">0</div>
-      <div class="stat-label">Trips</div>
-    </div>
-    <div class="stat">
-      <div class="stat-num" id="continent-count">0</div>
-      <div class="stat-label">Continents</div>
+      <div class="stat-label" data-i18n="trips">Trips</div>
     </div>
   </div>
 
   <div class="map-wrap">
     <div class="loading" id="loading">
-      Loading world <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span data-i18n="loading">Loading world</span> <span class="dot"></span><span class="dot"></span><span class="dot"></span>
     </div>
     <svg id="map" style="display:none"></svg>
   </div>
 
   <div class="legend">
-    <div class="legend-item"><span class="legend-swatch" style="background:var(--v0)"></span>Wish</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--v0)"></span><span data-i18n="legendWish">Wish</span></div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--v1)"></span>1</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--v2)"></span>2</div>
     <div class="legend-item"><span class="legend-swatch" style="background:var(--v3)"></span>3</div>
-    <div class="legend-item"><span class="legend-swatch" style="background:var(--v4)"></span>4+ trips</div>
+    <div class="legend-item"><span class="legend-swatch" style="background:var(--v4)"></span><span data-i18n="legendPlus">4+ trips</span></div>
   </div>
 
-  <p class="hint">Tap any country</p>
+  <p class="hint" data-i18n="hint">Tap any country</p>
 
   <details class="section" open id="section-places" style="display:none">
     <summary>
       <div class="section-title-wrap">
-        <h3 class="section-title">Places you've been</h3>
+        <h3 class="section-title" data-i18n="sectionPlaces">Places you've been</h3>
         <span class="section-count" id="places-count"></span>
       </div>
     </summary>
@@ -856,7 +1029,7 @@
   <details class="section" open id="section-wishlist" style="display:none">
     <summary>
       <div class="section-title-wrap">
-        <h3 class="section-title">Wishlist</h3>
+        <h3 class="section-title" data-i18n="sectionWishlist">Wishlist</h3>
         <span class="section-count" id="wish-count"></span>
       </div>
     </summary>
@@ -868,7 +1041,7 @@
   <details class="section" id="section-timeline" style="display:none">
     <summary>
       <div class="section-title-wrap">
-        <h3 class="section-title">Timeline</h3>
+        <h3 class="section-title" data-i18n="sectionTimeline">Timeline</h3>
         <span class="section-count" id="timeline-count"></span>
       </div>
     </summary>
@@ -880,7 +1053,7 @@
   <details class="section" open id="section-years" style="display:none">
     <summary>
       <div class="section-title-wrap">
-        <h3 class="section-title">By year</h3>
+        <h3 class="section-title" data-i18n="sectionYears">By year</h3>
       </div>
     </summary>
     <div class="section-body">
@@ -891,64 +1064,83 @@
   <details class="section">
     <summary>
       <div class="section-title-wrap">
-        <h3 class="section-title">Data</h3>
+        <h3 class="section-title" data-i18n="sectionData">Data</h3>
       </div>
     </summary>
     <div class="section-body">
       <div class="data-actions">
-        <button class="data-btn" id="export">Export JSON</button>
-        <button class="data-btn" id="import">Import JSON</button>
-        <button class="data-btn danger" id="reset">Reset all</button>
+        <button class="data-btn" id="export" data-i18n="dataExport">Export JSON</button>
+        <button class="data-btn" id="import" data-i18n="dataImport">Import JSON</button>
+        <button class="data-btn danger" id="reset" data-i18n="dataReset">Reset all</button>
       </div>
-      <p class="data-hint">
-        Export saves all your trips and wishlist to a file. Use it as backup, or to move between devices / browsers.
-      </p>
+      <p class="data-hint" data-i18n="dataHint">Export saves all your trips and wishlist to a file. Use it as backup, or to move between devices / browsers.</p>
+      <div class="lang-toggle">
+        <span class="lang-toggle-label" data-i18n="dataLang">Language</span>
+        <div class="lang-toggle-btns">
+          <button class="lang-btn" data-lang="en">English</button>
+          <button class="lang-btn" data-lang="ja">日本語</button>
+        </div>
+      </div>
       <input type="file" id="import-file" accept=".json,application/json" style="display:none">
     </div>
   </details>
 
-  <footer>Demo · Made with D3</footer>
+  <footer data-i18n="footer">Demo · Made with D3</footer>
 </div>
 
-<!-- Bottom sheet -->
-<div class="sheet-backdrop" id="sheet-backdrop"></div>
-<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+<!-- Bottom sheet (B-plan: no backdrop, map remains interactive) -->
+<div class="sheet" id="sheet" role="dialog" aria-modal="false">
   <div class="sheet-handle"></div>
   <div class="sheet-header">
     <h2 class="sheet-country" id="sheet-country">Country</h2>
-    <button class="sheet-close" id="sheet-close" aria-label="Close">×</button>
+    <button class="sheet-icon-btn" id="sheet-search" aria-label="Search country">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+    </button>
+    <button class="sheet-icon-btn sheet-close" id="sheet-close" aria-label="Close">×</button>
   </div>
   <div class="sheet-count"><strong id="sheet-count-num">0</strong> <span id="sheet-count-label">trips</span></div>
 
   <div class="wishlist-toggle" id="wishlist-toggle">
     <span class="wishlist-toggle-label">
       <span class="wishlist-star" id="wishlist-star">☆</span>
-      <span>Want to visit</span>
+      <span data-i18n="wishlistLabel">Want to visit</span>
     </span>
     <span class="wishlist-status" id="wishlist-status">Tap to add</span>
   </div>
 
   <div class="visit-list" id="visit-list"></div>
 
-  <button class="add-visit-btn" id="add-visit-btn">+ Add trip</button>
+  <button class="add-visit-btn" id="add-visit-btn" data-i18n="addTrip">+ Add trip</button>
 
   <div class="add-form" id="add-form">
     <div>
-      <label class="field-label" for="visit-date">Date (optional)</label>
+      <label class="field-label" for="visit-date" data-i18n="fieldDate">Date (optional)</label>
       <input type="date" id="visit-date">
     </div>
     <div>
-      <label class="field-label" for="visit-city">City (optional)</label>
-      <input type="text" id="visit-city" placeholder="e.g. Kyoto" maxlength="60">
+      <label class="field-label" for="visit-city" data-i18n="fieldCity">City (optional)</label>
+      <input type="text" id="visit-city" list="city-suggestions" placeholder="e.g. Kyoto" maxlength="60" autocomplete="off">
+      <datalist id="city-suggestions"></datalist>
     </div>
     <div>
-      <label class="field-label" for="visit-note">Memory (optional)</label>
+      <label class="field-label" for="visit-note" data-i18n="fieldMemory">Memory (optional)</label>
       <input type="text" id="visit-note" placeholder="e.g. Cherry blossoms" maxlength="80">
     </div>
     <div class="form-actions">
-      <button class="btn-cancel" id="cancel-visit">Cancel</button>
-      <button class="btn-save" id="save-visit">Add trip</button>
+      <button class="btn-cancel" id="cancel-visit" data-i18n="cancel">Cancel</button>
+      <button class="btn-save" id="save-visit" data-i18n="saveAddTrip">Add trip</button>
     </div>
+  </div>
+</div>
+
+<!-- Country search modal -->
+<div class="search-modal" id="search-modal">
+  <div class="search-modal-inner">
+    <div class="search-modal-header">
+      <input type="text" id="search-input" placeholder="Search country..." autocomplete="off">
+      <button class="sheet-icon-btn" id="search-close" aria-label="Close">×</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
   </div>
 </div>
 
@@ -964,9 +1156,148 @@
 
   const STORAGE_KEY = 'wanderlog-v3';
   const SEEDED_KEY = 'wanderlog-seeded-v3';
+  const LANG_KEY = 'wanderlog-lang';
   const OLD_KEYS = ['wanderlog-v2', 'wanderlog-v1'];
 
-  // ISO 3166-1 numeric -> alpha-2 mapping (for flag emojis)
+  // Translations
+  const translations = {
+    en: {
+      title: 'Your Travels — every place, remembered',
+      tagline: 'Every place, remembered',
+      countries: 'Countries',
+      ofWorld: 'of the world',
+      trips: 'Trips',
+      loading: 'Loading world',
+      loadingError: 'Could not load the world map',
+      legendWish: 'Wish',
+      legendPlus: '4+ trips',
+      hint: 'Tap any country',
+      sectionPlaces: "Places you've been",
+      sectionWishlist: 'Wishlist',
+      sectionTimeline: 'Timeline',
+      sectionYears: 'By year',
+      sectionData: 'Data',
+      dataExport: 'Export JSON',
+      dataImport: 'Import JSON',
+      dataReset: 'Reset all',
+      dataHint: 'Export saves all your trips and wishlist to a file. Use it as backup, or to move between devices.',
+      dataLang: 'Language',
+      addTrip: '+ Add trip',
+      cancel: 'Cancel',
+      saveAddTrip: 'Add trip',
+      fieldDate: 'Date (optional)',
+      fieldCity: 'City (optional)',
+      fieldMemory: 'Memory (optional)',
+      placeholderCity: 'e.g. Kyoto',
+      placeholderMemory: 'e.g. Cherry blossoms',
+      searchPlaceholder: 'Search country...',
+      wishlistLabel: 'Want to visit',
+      wishlistTapToAdd: 'Tap to add',
+      wishlistAdded: 'On your wishlist',
+      noDate: 'No date',
+      noTrips: 'No trips recorded yet',
+      confirmImport: 'Replace all current data with the imported file? Your current data will be lost.',
+      confirmReset: 'Delete all trips and wishlist? This cannot be undone.',
+      importError: 'Could not import this file. Please check it is a valid JSON export.',
+      footer: 'Demo · Made with D3',
+      searchEmpty: 'No countries match',
+      places: (n) => n + ' countr' + (n === 1 ? 'y' : 'ies'),
+      wishCount: (n) => n + ' countr' + (n === 1 ? 'y' : 'ies'),
+      tripCount: (n) => n + ' trip' + (n === 1 ? '' : 's'),
+      yearTrips: (n) => n + ' trip' + (n === 1 ? '' : 's'),
+      sheetTrips: (n) => n === 1 ? 'trip' : 'trips',
+      searchResultTrips: (n) => n + ' trip' + (n === 1 ? '' : 's'),
+      searchResultWish: 'wish',
+    },
+    ja: {
+      title: 'Your Travels — 旅した場所を、記憶に',
+      tagline: '旅した場所を、記憶に',
+      countries: '訪問国',
+      ofWorld: '世界の',
+      trips: '旅の回数',
+      loading: '世界を読み込み中',
+      loadingError: '世界地図を読み込めませんでした',
+      legendWish: '行きたい',
+      legendPlus: '4回以上',
+      hint: '国をタップ',
+      sectionPlaces: '訪問した国',
+      sectionWishlist: '行きたい国',
+      sectionTimeline: 'タイムライン',
+      sectionYears: '年別',
+      sectionData: 'データ',
+      dataExport: 'エクスポート',
+      dataImport: 'インポート',
+      dataReset: '全てリセット',
+      dataHint: 'エクスポートで全データを1つのファイルに保存できます。バックアップや別端末への移行に。',
+      dataLang: '言語',
+      addTrip: '+ 追加',
+      cancel: 'キャンセル',
+      saveAddTrip: '追加',
+      fieldDate: '日付（任意）',
+      fieldCity: '都市（任意）',
+      fieldMemory: 'メモ（任意）',
+      placeholderCity: '例：京都',
+      placeholderMemory: '例：桜が満開でした',
+      searchPlaceholder: '国名で検索...',
+      wishlistLabel: '行きたい',
+      wishlistTapToAdd: 'タップして追加',
+      wishlistAdded: '追加済み',
+      noDate: '日付なし',
+      noTrips: 'まだ記録がありません',
+      confirmImport: '全データを取り込みますか？現在のデータは失われます。',
+      confirmReset: '全ての記録を削除しますか？取り消せません。',
+      importError: 'ファイルを読み込めませんでした。有効なJSONか確認してください。',
+      footer: 'デモ · D3で作成',
+      searchEmpty: '該当する国がありません',
+      places: (n) => n + 'ヶ国',
+      wishCount: (n) => n + 'ヶ国',
+      tripCount: (n) => n + '回',
+      yearTrips: (n) => n + '回',
+      sheetTrips: (n) => '回',
+      searchResultTrips: (n) => n + '回',
+      searchResultWish: '行きたい',
+    }
+  };
+
+  let currentLang = 'en';
+  try {
+    const stored = localStorage.getItem(LANG_KEY);
+    if (stored === 'ja' || stored === 'en') {
+      currentLang = stored;
+    } else {
+      const bl = (navigator.language || 'en').toLowerCase();
+      if (bl.startsWith('ja')) currentLang = 'ja';
+    }
+  } catch(e) {}
+
+  function t(key) {
+    return translations[currentLang][key] !== undefined ? translations[currentLang][key] : (translations.en[key] || key);
+  }
+
+  function applyLang() {
+    document.documentElement.setAttribute('lang', currentLang);
+    document.title = t('title');
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    document.getElementById('visit-city').placeholder = t('placeholderCity');
+    document.getElementById('visit-note').placeholder = t('placeholderMemory');
+    document.getElementById('search-input').placeholder = t('searchPlaceholder');
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+    });
+  }
+
+  function setLang(lang) {
+    currentLang = lang;
+    try { localStorage.setItem(LANG_KEY, lang); } catch(e) {}
+    applyLang();
+    renderAll();
+    if (currentCountry) updateWishlistUI();
+    if (currentCountry) renderSheetContent();
+  }
+
+  // ISO 3166-1 numeric -> alpha-2 mapping
   const iso2 = {'4':'AF','8':'AL','10':'AQ','12':'DZ','16':'AS','20':'AD','24':'AO','28':'AG','31':'AZ','32':'AR','36':'AU','40':'AT','44':'BS','48':'BH','50':'BD','51':'AM','52':'BB','56':'BE','60':'BM','64':'BT','68':'BO','70':'BA','72':'BW','74':'BV','76':'BR','84':'BZ','86':'IO','90':'SB','92':'VG','96':'BN','100':'BG','104':'MM','108':'BI','112':'BY','116':'KH','120':'CM','124':'CA','132':'CV','136':'KY','140':'CF','144':'LK','148':'TD','152':'CL','156':'CN','158':'TW','162':'CX','166':'CC','170':'CO','174':'KM','175':'YT','178':'CG','180':'CD','184':'CK','188':'CR','191':'HR','192':'CU','196':'CY','203':'CZ','204':'BJ','208':'DK','212':'DM','214':'DO','218':'EC','222':'SV','226':'GQ','231':'ET','232':'ER','233':'EE','234':'FO','238':'FK','242':'FJ','246':'FI','248':'AX','250':'FR','254':'GF','258':'PF','260':'TF','262':'DJ','266':'GA','268':'GE','270':'GM','275':'PS','276':'DE','288':'GH','292':'GI','296':'KI','300':'GR','304':'GL','308':'GD','312':'GP','316':'GU','320':'GT','324':'GN','328':'GY','332':'HT','334':'HM','336':'VA','340':'HN','344':'HK','348':'HU','352':'IS','356':'IN','360':'ID','364':'IR','368':'IQ','372':'IE','376':'IL','380':'IT','384':'CI','388':'JM','392':'JP','398':'KZ','400':'JO','404':'KE','408':'KP','410':'KR','414':'KW','417':'KG','418':'LA','422':'LB','426':'LS','428':'LV','430':'LR','434':'LY','438':'LI','440':'LT','442':'LU','446':'MO','450':'MG','454':'MW','458':'MY','462':'MV','466':'ML','470':'MT','474':'MQ','478':'MR','480':'MU','484':'MX','492':'MC','496':'MN','498':'MD','499':'ME','500':'MS','504':'MA','508':'MZ','512':'OM','516':'NA','520':'NR','524':'NP','528':'NL','531':'CW','533':'AW','534':'SX','535':'BQ','540':'NC','548':'VU','554':'NZ','558':'NI','562':'NE','566':'NG','570':'NU','574':'NF','578':'NO','580':'MP','581':'UM','583':'FM','584':'MH','585':'PW','586':'PK','591':'PA','598':'PG','600':'PY','604':'PE','608':'PH','612':'PN','616':'PL','620':'PT','624':'GW','626':'TL','630':'PR','634':'QA','638':'RE','642':'RO','643':'RU','646':'RW','652':'BL','654':'SH','659':'KN','660':'AI','662':'LC','663':'MF','666':'PM','670':'VC','674':'SM','678':'ST','682':'SA','686':'SN','688':'RS','690':'SC','694':'SL','702':'SG','703':'SK','704':'VN','705':'SI','706':'SO','710':'ZA','716':'ZW','724':'ES','728':'SS','729':'SD','732':'EH','740':'SR','744':'SJ','748':'SZ','752':'SE','756':'CH','760':'SY','762':'TJ','764':'TH','768':'TG','772':'TK','776':'TO','780':'TT','784':'AE','788':'TN','792':'TR','795':'TM','796':'TC','798':'TV','800':'UG','804':'UA','807':'MK','818':'EG','826':'GB','831':'GG','832':'JE','833':'IM','834':'TZ','840':'US','850':'VI','854':'BF','858':'UY','860':'UZ','862':'VE','876':'WF','882':'WS','887':'YE','894':'ZM'};
 
   function flagFor(id) {
@@ -975,7 +1306,69 @@
     return String.fromCodePoint(...code.split('').map(c => 0x1F1E6 + c.charCodeAt(0) - 65));
   }
 
-  // Continent lookup
+  // Cities database - major travel destinations
+  const citiesByCountry = {
+    '392': ['Tokyo','Kyoto','Osaka','Sapporo','Fukuoka','Yokohama','Nagoya','Hiroshima','Kobe','Nara','Kanazawa','Sendai','Okinawa','Nikko','Hakone'],
+    '250': ['Paris','Lyon','Marseille','Nice','Bordeaux','Toulouse','Lille','Strasbourg','Nantes','Cannes','Montpellier','Avignon'],
+    '380': ['Rome','Milan','Florence','Venice','Naples','Turin','Bologna','Verona','Palermo','Genoa','Pisa','Amalfi','Cinque Terre'],
+    '840': ['New York','Los Angeles','San Francisco','Chicago','Las Vegas','Miami','Seattle','Boston','Washington DC','Orlando','New Orleans','Honolulu','Portland','Austin'],
+    '724': ['Barcelona','Madrid','Seville','Valencia','Granada','Bilbao','Malaga','Ibiza','Palma','San Sebastian','Cordoba','Toledo'],
+    '826': ['London','Edinburgh','Manchester','Liverpool','Bath','Oxford','Cambridge','York','Bristol','Glasgow','Brighton','Cardiff'],
+    '276': ['Berlin','Munich','Hamburg','Cologne','Frankfurt','Dresden','Heidelberg','Nuremberg','Stuttgart','Leipzig'],
+    '156': ['Beijing','Shanghai','Hong Kong','Xi\u2019an','Chengdu','Guangzhou','Suzhou','Hangzhou','Lijiang','Chongqing'],
+    '410': ['Seoul','Busan','Jeju','Incheon','Daegu','Gyeongju'],
+    '764': ['Bangkok','Chiang Mai','Phuket','Krabi','Pattaya','Koh Samui','Ayutthaya'],
+    '704': ['Ho Chi Minh City','Hanoi','Da Nang','Hoi An','Nha Trang','Hue','Halong Bay','Sapa'],
+    '360': ['Bali','Jakarta','Yogyakarta','Lombok','Bandung','Ubud'],
+    '458': ['Kuala Lumpur','Penang','Langkawi','Kota Kinabalu','Malacca'],
+    '702': ['Singapore'],
+    '608': ['Manila','Cebu','Boracay','Palawan','Bohol'],
+    '356': ['Delhi','Mumbai','Jaipur','Agra','Goa','Bangalore','Chennai','Kolkata','Varanasi','Udaipur'],
+    '36': ['Sydney','Melbourne','Brisbane','Perth','Gold Coast','Cairns','Adelaide','Darwin','Hobart'],
+    '554': ['Auckland','Wellington','Queenstown','Christchurch','Rotorua'],
+    '124': ['Toronto','Vancouver','Montreal','Quebec City','Calgary','Ottawa','Banff','Victoria'],
+    '484': ['Mexico City','Cancun','Playa del Carmen','Tulum','Guadalajara','Oaxaca','Puerto Vallarta','San Miguel de Allende'],
+    '76': ['Rio de Janeiro','S\u00e3o Paulo','Salvador','Bras\u00edlia','Iguazu Falls','Manaus'],
+    '32': ['Buenos Aires','Mendoza','Bariloche','Salta','Ushuaia','Iguazu'],
+    '152': ['Santiago','Valpara\u00edso','San Pedro de Atacama','Puerto Varas'],
+    '604': ['Lima','Cusco','Arequipa','Machu Picchu','Puno'],
+    '170': ['Bogot\u00e1','Cartagena','Medell\u00edn','Cali'],
+    '218': ['Quito','Gal\u00e1pagos','Cuenca'],
+    '862': ['Caracas'],
+    '710': ['Cape Town','Johannesburg','Durban','Kruger','Stellenbosch'],
+    '404': ['Nairobi','Mombasa','Maasai Mara'],
+    '834': ['Zanzibar','Dar es Salaam','Serengeti','Arusha'],
+    '818': ['Cairo','Luxor','Alexandria','Aswan','Sharm El Sheikh','Hurghada'],
+    '504': ['Marrakech','Casablanca','Fes','Chefchaouen','Rabat','Essaouira'],
+    '788': ['Tunis','Sousse'],
+    '792': ['Istanbul','Cappadocia','Antalya','Izmir','Bodrum','Pamukkale'],
+    '300': ['Athens','Santorini','Mykonos','Crete','Rhodes','Corfu','Thessaloniki'],
+    '620': ['Lisbon','Porto','Madeira','Algarve','Sintra','Coimbra'],
+    '208': ['Copenhagen','Aarhus'],
+    '752': ['Stockholm','Gothenburg','Malm\u00f6'],
+    '578': ['Oslo','Bergen','Troms\u00f8'],
+    '246': ['Helsinki','Rovaniemi','Turku'],
+    '352': ['Reykjav\u00edk'],
+    '372': ['Dublin','Galway','Cork','Killarney'],
+    '528': ['Amsterdam','Rotterdam','The Hague','Utrecht'],
+    '56': ['Brussels','Bruges','Ghent','Antwerp'],
+    '40': ['Vienna','Salzburg','Innsbruck','Hallstatt','Graz'],
+    '756': ['Zurich','Geneva','Lucerne','Bern','Zermatt','Interlaken'],
+    '203': ['Prague','Cesky Krumlov','Brno'],
+    '348': ['Budapest'],
+    '616': ['Warsaw','Krakow','Wroclaw','Gdansk'],
+    '191': ['Zagreb','Dubrovnik','Split','Hvar','Zadar'],
+    '705': ['Ljubljana','Bled','Piran'],
+    '100': ['Sofia','Plovdiv','Varna'],
+    '642': ['Bucharest','Brasov','Cluj-Napoca'],
+    '643': ['Moscow','St. Petersburg'],
+    '784': ['Dubai','Abu Dhabi'],
+    '682': ['Riyadh','Jeddah','Mecca'],
+    '376': ['Tel Aviv','Jerusalem','Haifa','Eilat'],
+    '400': ['Amman','Petra','Aqaba']
+  };
+
+  // Continent lookup (unused in stats now, kept for future)
   const continentGroups = {
     AF: ['12','24','72','108','120','132','140','148','174','180','204','226','231','232','262','266','270','288','324','384','404','426','430','434','450','454','466','478','480','504','508','516','562','566','624','646','686','690','694','706','710','716','728','729','732','736','748','768','788','800','818','834','854'],
     AS: ['4','31','50','51','64','96','104','116','144','156','196','268','275','344','356','360','364','368','376','392','398','400','408','410','414','417','418','422','458','462','496','512','524','586','608','626','634','643','682','702','704','760','762','764','784','792','795','860','887'],
@@ -985,10 +1378,6 @@
     OC: ['36','90','242','258','296','316','520','540','548','554','570','580','585','598','612','772','776','798','876','882'],
     AN: ['10']
   };
-  const idToContinent = {};
-  Object.entries(continentGroups).forEach(([cont, ids]) => {
-    ids.forEach(id => { idToContinent[id] = cont; });
-  });
 
   // ── State ─────────────────────────────────────────────
   let state = { visits: [], bucketList: [] };
@@ -1005,7 +1394,6 @@
       state.visits = Array.isArray(parsed.visits) ? parsed.visits : [];
       state.bucketList = Array.isArray(parsed.bucketList) ? parsed.bucketList : [];
     } else {
-      // Migrate from v2 (visits array) or v1 (visited countries)
       for (const oldKey of OLD_KEYS) {
         const oldRaw = localStorage.getItem(oldKey);
         if (oldRaw) {
@@ -1092,9 +1480,16 @@
     .translate([width / 2, height / 2 + 6]);
   const pathGen = d3.geoPath(projection);
 
+  let allCountries = [];
+
   Promise.resolve(WORLD_DATA)
     .then(world => {
       const countries = topojson.feature(world, world.objects.countries).features;
+      allCountries = countries.map(f => ({
+        id: String(f.id),
+        name: f.properties.name
+      })).sort((a, b) => a.name.localeCompare(b.name));
+
       const g = svg.append('g');
       g.selectAll('path')
         .data(countries)
@@ -1116,24 +1511,29 @@
       renderAll();
     });
 
-  // ── Bottom sheet ─────────────────────────────────────
+  // ── Bottom sheet (B-plan) ─────────────────────────────
   let currentCountry = null;
 
   function openSheet(id, name) {
+    // Remove previous selection highlight
+    d3.selectAll('.country.selected').classed('selected', false);
+    // Add selection to new country
+    d3.select(`.country[data-id="${id}"]`).classed('selected', true);
+
     currentCountry = { id, name };
     const flag = flagFor(id);
     document.getElementById('sheet-country').innerHTML =
       (flag ? `<span class="flag">${flag}</span>` : '') + escapeHtml(name);
     hideAddForm();
+    updateCitySuggestions();
     updateWishlistUI();
     renderSheetContent();
     document.getElementById('sheet').classList.add('show');
-    document.getElementById('sheet-backdrop').classList.add('show');
   }
 
   function closeSheet() {
     document.getElementById('sheet').classList.remove('show');
-    document.getElementById('sheet-backdrop').classList.remove('show');
+    d3.selectAll('.country.selected').classed('selected', false);
     hideAddForm();
     currentCountry = null;
   }
@@ -1147,7 +1547,7 @@
     const status = document.getElementById('wishlist-status');
     toggle.classList.toggle('active', wishing);
     star.textContent = wishing ? '★' : '☆';
-    status.textContent = wishing ? 'On your wishlist' : 'Tap to add';
+    status.textContent = wishing ? t('wishlistAdded') : t('wishlistTapToAdd');
   }
 
   function renderSheetContent() {
@@ -1157,11 +1557,11 @@
     const count = list.length;
 
     document.getElementById('sheet-count-num').textContent = count;
-    document.getElementById('sheet-count-label').textContent = count === 1 ? 'trip' : 'trips';
+    document.getElementById('sheet-count-label').textContent = t('sheetTrips')(count);
 
     const listEl = document.getElementById('visit-list');
     if (list.length === 0) {
-      listEl.innerHTML = '<div class="empty-visits">No trips recorded yet</div>';
+      listEl.innerHTML = `<div class="empty-visits">${escapeHtml(t('noTrips'))}</div>`;
     } else {
       const sorted = [...list].sort((a, b) => {
         if (!a.date && !b.date) return 0;
@@ -1172,11 +1572,11 @@
       listEl.innerHTML = sorted.map(v => `
         <div class="visit-item">
           <div class="visit-item-info">
-            <div class="visit-date${v.date ? '' : ' no-date'}">${v.date ? formatDate(v.date) : 'No date'}</div>
+            <div class="visit-date${v.date ? '' : ' no-date'}">${v.date ? formatDate(v.date) : escapeHtml(t('noDate'))}</div>
             ${v.city ? `<div class="visit-city">${escapeHtml(v.city)}</div>` : ''}
             ${v.note ? `<div class="visit-note">${escapeHtml(v.note)}</div>` : ''}
           </div>
-          <button class="visit-delete" data-visit-id="${v.id}" aria-label="Remove trip">×</button>
+          <button class="visit-delete" data-visit-id="${v.id}" aria-label="Remove">×</button>
         </div>
       `).join('');
       listEl.querySelectorAll('.visit-delete').forEach(btn => {
@@ -1189,14 +1589,20 @@
     if (!d) return '';
     const date = new Date(d + 'T00:00:00');
     if (isNaN(date.getTime())) return d;
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    const locale = currentLang === 'ja' ? 'ja-JP' : 'en-US';
+    return date.toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
-  function formatDateShort(d) {
-    if (!d) return '';
-    const date = new Date(d + 'T00:00:00');
-    if (isNaN(date.getTime())) return d;
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  function formatDateShort(d) { return formatDate(d); }
+
+  function updateCitySuggestions() {
+    if (!currentCountry) return;
+    const { id } = currentCountry;
+    const preset = citiesByCountry[id] || [];
+    const past = [...new Set(state.visits.filter(v => String(v.countryId) === String(id) && v.city).map(v => v.city))];
+    const combined = [...new Set([...past, ...preset])];
+    const datalist = document.getElementById('city-suggestions');
+    datalist.innerHTML = combined.map(c => `<option value="${escapeHtml(c)}"></option>`).join('');
   }
 
   function addVisit(date, city, note) {
@@ -1210,6 +1616,7 @@
     el.classed('just-added', true);
     setTimeout(() => el.classed('just-added', false), 500);
     updateWishlistUI();
+    updateCitySuggestions();
     renderSheetContent();
     renderAll();
   }
@@ -1220,6 +1627,7 @@
     state.visits = state.visits.filter(x => x.id !== vid);
     save();
     updateCountryPath(v.countryId);
+    updateCitySuggestions();
     renderSheetContent();
     renderAll();
   }
@@ -1240,7 +1648,6 @@
   }
 
   document.getElementById('sheet-close').addEventListener('click', closeSheet);
-  document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
   document.getElementById('add-visit-btn').addEventListener('click', showAddForm);
   document.getElementById('cancel-visit').addEventListener('click', hideAddForm);
   document.getElementById('save-visit').addEventListener('click', () => {
@@ -1262,9 +1669,63 @@
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && document.getElementById('sheet').classList.contains('show')) {
-      closeSheet();
+    if (e.key === 'Escape') {
+      if (document.getElementById('search-modal').classList.contains('show')) {
+        closeSearch();
+      } else if (document.getElementById('sheet').classList.contains('show')) {
+        closeSheet();
+      }
     }
+  });
+
+  // ── Search modal ────────────────────────────────────
+  function openSearch() {
+    document.getElementById('search-modal').classList.add('show');
+    document.getElementById('search-input').value = '';
+    renderSearchResults('');
+    setTimeout(() => document.getElementById('search-input').focus(), 100);
+  }
+
+  function closeSearch() {
+    document.getElementById('search-modal').classList.remove('show');
+  }
+
+  function renderSearchResults(q) {
+    const query = q.trim().toLowerCase();
+    const results = allCountries.filter(c => c.name.toLowerCase().includes(query));
+    const el = document.getElementById('search-results');
+    if (results.length === 0) {
+      el.innerHTML = `<div class="search-empty">${escapeHtml(t('searchEmpty'))}</div>`;
+      return;
+    }
+    el.innerHTML = results.slice(0, 60).map(c => {
+      const count = countFor(c.id);
+      const wish = isWished(c.id);
+      const flag = flagFor(c.id);
+      let status = '';
+      if (count > 0) status = `<span class="search-result-count">${t('searchResultTrips')(count)}</span>`;
+      else if (wish) status = `<span class="search-result-count">${escapeHtml(t('searchResultWish'))}</span>`;
+      return `<div class="search-result" data-country-id="${c.id}" data-country-name="${escapeHtml(c.name)}">
+        ${flag ? `<span class="search-result-flag">${flag}</span>` : ''}
+        <span>${escapeHtml(c.name)}</span>
+        ${status}
+      </div>`;
+    }).join('');
+    el.querySelectorAll('.search-result').forEach(row => {
+      row.addEventListener('click', () => {
+        const id = row.getAttribute('data-country-id');
+        const name = row.getAttribute('data-country-name');
+        closeSearch();
+        openSheet(id, name);
+      });
+    });
+  }
+
+  document.getElementById('sheet-search').addEventListener('click', openSearch);
+  document.getElementById('search-close').addEventListener('click', closeSearch);
+  document.getElementById('search-input').addEventListener('input', e => renderSearchResults(e.target.value));
+  document.getElementById('search-modal').addEventListener('click', e => {
+    if (e.target === document.getElementById('search-modal')) closeSearch();
   });
 
   // ── Render sections ─────────────────────────────────
@@ -1278,14 +1739,10 @@
 
   function updateStats() {
     const uniq = new Set(state.visits.map(v => String(v.countryId)));
-    const contSet = new Set();
-    uniq.forEach(id => {
-      const c = idToContinent[id];
-      if (c) contSet.add(c);
-    });
+    const pct = Math.round((uniq.size / 195) * 100);
     document.getElementById('country-count').textContent = uniq.size;
     document.getElementById('trip-count').textContent = state.visits.length;
-    document.getElementById('continent-count').textContent = contSet.size;
+    document.getElementById('world-pct').textContent = pct + '%';
   }
 
   function renderPlaces() {
@@ -1303,7 +1760,7 @@
     const arr = Object.values(grouped);
     if (arr.length === 0) { section.style.display = 'none'; return; }
     section.style.display = '';
-    count.textContent = arr.length + ' countr' + (arr.length === 1 ? 'y' : 'ies');
+    count.textContent = t('places')(arr.length);
     arr.sort((a, b) => {
       if (a.latestDate && b.latestDate) return b.latestDate.localeCompare(a.latestDate);
       if (a.latestDate) return -1;
@@ -1325,7 +1782,7 @@
     const count = document.getElementById('wish-count');
     if (state.bucketList.length === 0) { section.style.display = 'none'; return; }
     section.style.display = '';
-    count.textContent = state.bucketList.length + ' countr' + (state.bucketList.length === 1 ? 'y' : 'ies');
+    count.textContent = t('wishCount')(state.bucketList.length);
     list.innerHTML = state.bucketList.map(w => {
       const flag = flagFor(w.countryId);
       return `<span class="chip chip-wish" data-country-id="${w.countryId}" data-country-name="${escapeHtml(w.countryName)}">${flag ? `<span class="chip-flag">${flag}</span>` : '<span class="chip-dot"></span>'}${escapeHtml(w.countryName)}</span>`;
@@ -1341,7 +1798,7 @@
     const count = document.getElementById('timeline-count');
     if (state.visits.length === 0) { section.style.display = 'none'; return; }
     section.style.display = '';
-    count.textContent = state.visits.length + ' trip' + (state.visits.length === 1 ? '' : 's');
+    count.textContent = t('tripCount')(state.visits.length);
     const sorted = [...state.visits].sort((a, b) => {
       if (!a.date && !b.date) return 0;
       if (!a.date) return 1;
@@ -1352,12 +1809,9 @@
       const flag = flagFor(v.countryId);
       return `
         <div class="timeline-item">
-          <div class="timeline-date${v.date ? '' : ' no-date'}">${v.date ? formatDateShort(v.date) : 'No date'}</div>
-          <div class="timeline-info">
-            <div class="timeline-country">${flag ? `<span>${flag}</span>` : ''}${escapeHtml(v.countryName)}</div>
-            ${v.city ? `<div class="timeline-city">${escapeHtml(v.city)}</div>` : ''}
-            ${v.note ? `<div class="timeline-note">${escapeHtml(v.note)}</div>` : ''}
-          </div>
+          <div class="timeline-date${v.date ? '' : ' no-date'}">${v.date ? formatDateShort(v.date) : escapeHtml(t('noDate'))}</div>
+          <div class="timeline-country">${flag ? `<span>${flag}</span>` : ''}<span>${escapeHtml(v.countryName)}</span>${v.city ? `<span class="timeline-city">${escapeHtml(v.city)}</span>` : ''}</div>
+          ${v.note ? `<div class="timeline-note">${escapeHtml(v.note)}</div>` : ''}
         </div>`;
     }).join('');
   }
@@ -1382,7 +1836,7 @@
         <div class="year-row">
           <div class="year-label">${y}</div>
           <div class="year-bar-wrap"><div class="year-bar" style="width:${pct}%"></div></div>
-          <div class="year-count">${c} trip${c === 1 ? '' : 's'}</div>
+          <div class="year-count">${t('yearTrips')(c)}</div>
         </div>`;
     }).join('');
   }
@@ -1398,7 +1852,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'wanderlog-' + new Date().toISOString().slice(0, 10) + '.json';
+    a.download = 'your-travels-' + new Date().toISOString().slice(0, 10) + '.json';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1417,7 +1871,7 @@
       try {
         const data = JSON.parse(evt.target.result);
         if (!Array.isArray(data.visits)) throw new Error('Invalid file format');
-        if (!confirm('Replace all current data with the imported file? Your current data will be lost.')) return;
+        if (!confirm(t('confirmImport'))) return;
         state = {
           visits: data.visits.map(v => ({
             id: v.id || gid(),
@@ -1440,7 +1894,7 @@
         ids.forEach(id => updateCountryPath(id));
         renderAll();
       } catch(err) {
-        alert('Could not import this file. Please check it is a valid Wanderlog JSON export.');
+        alert(t('importError'));
       }
       e.target.value = '';
     };
@@ -1448,12 +1902,20 @@
   });
 
   document.getElementById('reset').addEventListener('click', () => {
-    if (!confirm('Delete all trips and wishlist? This cannot be undone.')) return;
+    if (!confirm(t('confirmReset'))) return;
     state = { visits: [], bucketList: [] };
     save();
     d3.selectAll('.country').classed('v1 v2 v3 v4 wished', false);
     renderAll();
   });
+
+  // Language toggle
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.getAttribute('data-lang')));
+  });
+
+  // Apply initial language
+  applyLang();
 })();
 </script>
 
