@@ -449,49 +449,43 @@
     margin-top: 12px;
   }
 
-  .lang-toggle {
+    .lang-switch {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px;
-    background: var(--bg);
-    border-radius: 10px;
-    border: 0.5px solid var(--border);
-    margin-top: 16px;
-  }
-
-  .lang-toggle-label {
-    font-size: 10.5px;
-    color: var(--text-muted);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    font-weight: 500;
-  }
-
-  .lang-toggle-btns {
-    display: flex;
+    justify-content: flex-end;
     gap: 4px;
+    margin-top: 14px;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .lang-sep {
+    color: var(--text-muted);
+    font-size: 11px;
+    opacity: 0.5;
   }
 
   .lang-btn {
     background: transparent;
     color: var(--text-muted);
-    border: 0.5px solid var(--border);
-    padding: 6px 12px;
+    border: none;
+    padding: 4px 8px;
     border-radius: 100px;
     font-family: var(--font);
-    font-size: 11px;
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.2s;
     font-weight: 500;
   }
 
   .lang-btn.active {
-    background: var(--v3);
-    color: white;
-    border-color: var(--v3);
+    color: var(--v3);
+    font-weight: 600;
   }
 
+  .lang-btn:hover { color: var(--text); }
   .loading {
     text-align: center;
     padding: 100px 0;
@@ -978,8 +972,13 @@
 
 <div class="container">
   <header>
-    <h1 class="brand">YOUR <em>TRAVELS</em></h1>
+        <h1 class="brand">YOUR <em>TRAVELS</em></h1>
     <p class="tagline" data-i18n="tagline">Every place, remembered</p>
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="en">EN</button>
+      <span class="lang-sep">·</span>
+      <button class="lang-btn" data-lang="ja">JP</button>
+    </div>
   </header>
 
   <div class="stats">
@@ -1074,12 +1073,8 @@
         <button class="data-btn danger" id="reset" data-i18n="dataReset">Reset all</button>
       </div>
       <p class="data-hint" data-i18n="dataHint">Export saves all your trips and wishlist to a file. Use it as backup, or to move between devices / browsers.</p>
-      <div class="lang-toggle">
-        <span class="lang-toggle-label" data-i18n="dataLang">Language</span>
-        <div class="lang-toggle-btns">
-          <button class="lang-btn" data-lang="en">English</button>
-          <button class="lang-btn" data-lang="ja">日本語</button>
-        </div>
+            <p class="data-hint" data-i18n="dataHint">Export saves all your trips and wishlist to a file. Use it as backup, or to move between devices / browsers.</p>
+      <input type="file" id="import-file" accept=".json,application/json" style="display:none">
       </div>
       <input type="file" id="import-file" accept=".json,application/json" style="display:none">
     </div>
